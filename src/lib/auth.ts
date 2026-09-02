@@ -7,7 +7,7 @@ export const USERS: { name: string; email: string }[] = [
   { name: "Adrián Garza", email: "adrian.garza@eo-arclad.app" },
 ];
 const LOCAL_KEY = "eo.local.session";
-const LOCAL_PASSWORD = "ARclad2026"; // solo modo local/demo; en Supabase la contraseña vive en Auth
+const LOCAL_PASSWORD = "Arclad2026"; // solo modo local/demo; en Supabase la contraseña vive en Auth
 
 export interface Session { name: string; email: string; }
 
