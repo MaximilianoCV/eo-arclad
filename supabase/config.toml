@@ -1,0 +1,3 @@
+# Configuración mínima para `supabase link` / `supabase db push`
+[db]
+major_version = 17

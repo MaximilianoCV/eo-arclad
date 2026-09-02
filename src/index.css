@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Tokens LCG (Growth Stories) — tema claro comprometido ===== */
+@layer base {
+  :root {
+    --background: 0 0% 95.3%;          /* #F3F3F3 off white */
+    --foreground: 60 4% 11%;           /* #1D1D1B */
+    --card: 0 0% 100%;
+    --card-foreground: 60 4% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 60 4% 11%;
+    --primary: 162 100% 12%;           /* #003D2D deep green */
+    --primary-foreground: 152 82% 56%; /* #31EB97 mint */
+    --secondary: 140 22% 92%;          /* sage suave */
+    --secondary-foreground: 162 100% 12%;
+    --muted: 140 22% 92%;
+    --muted-foreground: 146 9% 33%;    /* #4C5A52 */
+    --accent: 167 100% 28%;            /* #009072 teal */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 57% 44%;          /* #B03030 */
+    --destructive-foreground: 0 0% 98%;
+    --border: 130 10% 89%;             /* #DFE5E0 */
+    --input: 130 10% 89%;
+    --ring: 167 100% 28%;
+    --radius: 8px;
+
+    --mint: 152 82% 56%;
+    --sage: 110 18% 83%;               /* #CDDCC9 */
+
+    /* Categorías EO (paleta validada CVD, orden = código 1..7) */
+    --cat-supervision-active: #009072;
+    --cat-training: #4176E6;
+    --cat-administrative: #B8760F;
+    --cat-operative: #1C8FB0;
+    --cat-travel: #7E9C22;
+    --cat-supervision-passive: #6E5BB8;
+    --cat-unproductive: #C0504D;
+
+    /* Timer (bloque oscuro sobre app clara) */
+    --timer-bg: 162 100% 12%;
+    --timer-fg: 0 0% 100%;
+    --timer-muted: 150 18% 67%;        /* #9DB8AC */
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  html { color-scheme: light; }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Archivo', system-ui, sans-serif;
+  }
+  .font-mono {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  .label-caps {
+    @apply text-xs font-semibold uppercase tracking-widest text-muted-foreground;
+  }
+  .data-text {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    @apply text-sm;
+  }
+  .display-text {
+    @apply text-xl font-bold tracking-tight text-primary;
+  }
+  .industrial-card {
+    @apply rounded-lg border bg-card p-4;
+  }
+  .press-in {
+    @apply transition-transform active:scale-[0.98];
+  }
+}
