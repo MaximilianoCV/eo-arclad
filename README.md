@@ -26,5 +26,5 @@ npm run dev          # http://localhost:8080
 ## Power BI
 Obtener datos → PostgreSQL (credenciales en Project Settings → Database). Tablas `studies`, `activities`, `perceptions` y vista `v_resumen_estudio`.
 
-## Seguridad
-Equipo interno sin login: la anon key permite leer y escribir. No publicarla fuera del equipo. Para endurecer: Supabase Auth y cambiar `anon` por `authenticated` en las políticas.
+## Acceso
+Inicio de sesión con usuario (consultora) y contraseña. Los usuarios viven en Supabase → Authentication → Users (registro público desactivado); la lista de nombres que muestra la app está en `src/lib/auth.ts`. Las políticas RLS solo permiten leer y escribir a usuarios autenticados, así que la anon key visible en la app no sirve sin sesión. Para agregar una consultora: crear el usuario en Supabase y añadir su nombre y email en `USERS`.

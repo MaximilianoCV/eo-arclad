@@ -61,13 +61,14 @@ from public.studies s
 left join public.activities a on a.study_id = s.id
 group by s.id, a.category;
 
--- Seguridad: equipo interno de 3 sin login. La anon key permite leer y escribir; no publicarla fuera del equipo.
+-- Seguridad: solo usuarios autenticados (Supabase Auth, email + contraseña). Los usuarios se crean en
+-- Authentication → Users (o vía admin API); el registro público está desactivado (disable_signup).
 alter table public.studies enable row level security;
 alter table public.activities enable row level security;
 alter table public.perceptions enable row level security;
-create policy "equipo estudios" on public.studies for all to anon using (true) with check (true);
-create policy "equipo actividades" on public.activities for all to anon using (true) with check (true);
-create policy "equipo percepciones" on public.perceptions for all to anon using (true) with check (true);
+create policy "auth estudios" on public.studies for all to authenticated using (true) with check (true);
+create policy "auth actividades" on public.activities for all to authenticated using (true) with check (true);
+create policy "auth percepciones" on public.perceptions for all to authenticated using (true) with check (true);
 
 -- Semilla: los 7 EO del Plan de Vuelo DX (hoja "2. Plan Consultor", Tipo = Estudio de Observación)
 insert into public.studies (plan_id, frente, created_by, position, objective, semana) values

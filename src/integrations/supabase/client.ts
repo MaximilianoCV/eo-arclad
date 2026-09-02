@@ -20,7 +20,7 @@ export function getSupabase(): SupabaseClient | null {
   if (client) return client;
   const cfg = getSupabaseConfig();
   if (!cfg) return null;
-  client = createClient(cfg.url, cfg.key, { auth: { persistSession: false } });
+  client = createClient(cfg.url, cfg.key, { auth: { persistSession: true, autoRefreshToken: true, storage: localStorage } });
   return client;
 }
 export const hasSupabase = () => getSupabaseConfig() !== null;

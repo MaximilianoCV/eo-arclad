@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
-import { Plus, Timer, BarChart3, Cloud, CloudOff } from "lucide-react";
+import { Plus, Timer, BarChart3, Cloud, CloudOff, LogOut } from "lucide-react";
+import { signOut, type Session } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { isCloud } from "@/lib/api";
 import ConfigDialog from "./ConfigDialog";
@@ -11,7 +12,7 @@ const LINKS = [
   { to: "/resumen", label: "Resumen", icon: BarChart3, match: (p: string) => p === "/resumen" },
 ];
 
-export default function TopNav() {
+export default function TopNav({ session, onSignOut }: { session: Session; onSignOut: () => void }) {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
   const cloud = isCloud();
