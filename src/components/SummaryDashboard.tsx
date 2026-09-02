@@ -47,7 +47,11 @@ export default function SummaryDashboard() {
   const groups = useMemo(() => {
     const m: Record<string, StudyRow[]> = {};
     rows.forEach(s => { const k = group === "study" ? `${s.position}${s.collaborator_name ? " · " + s.collaborator_name : ""}` : String(s[group] || `Sin ${GROUPS[group].toLowerCase()}`); (m[k] = m[k] || []).push(s); });
-    return Object.entries(m).map(([k, ss]) => { const { by, t } = secsOf(new Set(ss.map(s => s.id))); const row: Record<string, number | string> = { name: k, n: ss.length, t }; ALL_CATEGORIES.forEach(c => (row[c] = t ? +(by[c] / t * 100).toFixed(1) : 0)); return row; }).sort((a, b) => (b.t as number) - (a.t as number));
+    return Object.entries(m).map(([k, ss]) => { const { by, t } = secsOf(new Set(ss.map(s => s.id))); const row: Record<string, number | string> = { name: k, n: ss.length, t };
+      // porcentajes a 1 decimal que suman exactamente 100 (resto mayor)
+      const raw = ALL_CATEGORIES.map(c => t ? by[c] / t * 1000 : 0); const fl = raw.map(Math.floor); let rest = t ? 1000 - fl.reduce((a, b) => a + b, 0) : 0;
+      raw.map((v, i) => [v - fl[i], i]).sort((a, b) => b[0] - a[0]).forEach(([, i]) => { if (rest > 0) { fl[i as number]++; rest--; } });
+      ALL_CATEGORIES.forEach((c, i) => (row[c] = fl[i] / 10)); return row; }).sort((a, b) => (b.t as number) - (a.t as number));
   }, [rows, group, acts]);
 
   const perception = (type: "actual" | "ideal") => { const acc = Object.fromEntries(ALL_CATEGORIES.map(c => [c, 0])) as Record<ActivityCategory, number>; let n = 0; rows.forEach(s => { const p = percs.find(x => x.study_id === s.id && x.perception_type === type); if (!p) return; const w = secsOf(new Set([s.id])).t || 1; n += w; ALL_CATEGORIES.forEach(c => (acc[c] += (p[c] || 0) * w)); }); return n ? Object.fromEntries(ALL_CATEGORIES.map(c => [c, acc[c] / n])) as Record<ActivityCategory, number> : null; };
@@ -110,11 +114,11 @@ export default function SummaryDashboard() {
                 <div className="mt-3" style={{ height: Math.max(220, groups.length * 44 + 60) }}>
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={groups} layout="vertical" margin={{ left: 8, right: 16, top: 4, bottom: 4 }} barCategoryGap={10}>
-                      <XAxis type="number" domain={[0, 100]} tickFormatter={v => `${v}%`} tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                      <XAxis type="number" domain={[0, 100]} ticks={[0, 25, 50, 75, 100]} tickFormatter={v => `${v}%`} tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
                       <YAxis type="category" dataKey="name" width={170} tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
                       <Tooltip formatter={(v: number, n: string) => [`${v}%`, CATEGORY_LABELS[n as ActivityCategory]]} contentStyle={{ borderRadius: 8, fontSize: 12, border: "1px solid hsl(var(--border))" }} />
                       <Legend formatter={(v: string) => CATEGORY_SHORT[v as ActivityCategory]} wrapperStyle={{ fontSize: 11 }} />
-                      {ALL_CATEGORIES.map(c => <Bar key={c} dataKey={c} stackId="a" fill={CHART_COLORS[c]} stroke="hsl(var(--card))" strokeWidth={1} />)}
+                      {ALL_CATEGORIES.map(c => <Bar key={c} dataKey={c} stackId="a" fill={CHART_COLORS[c]} stroke="hsl(var(--card))" strokeWidth={1} isAnimationActive={false} />)}
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -122,7 +126,7 @@ export default function SummaryDashboard() {
             </div>
             <div className="industrial-card">
               <span className="label-caps text-[10px]">Día observado · total del corte</span>
-              <ProfessionalPie data={ALL_CATEGORIES.filter(c => all.by[c] > 0).map(c => ({ name: CATEGORY_SHORT[c], value: all.by[c], color: CHART_COLORS[c] }))} tooltipFormatter={formatTime} height={300} />
+              <ProfessionalPie data={ALL_CATEGORIES.filter(c => all.by[c] > 0).map(c => ({ name: CATEGORY_SHORT[c], value: all.by[c], color: CHART_COLORS[c] }))} tooltipFormatter={formatTime} height={260} labels="inside" />
               <div className="space-y-1 mt-2">{ALL_CATEGORIES.map(c => <div key={c} className="flex items-center gap-2 text-xs py-1 border-b border-border/50"><span className="w-3 h-3 rounded-sm" style={{ background: CHART_COLORS[c] }} /><span className="flex-1 truncate">{CATEGORY_LABELS[c]}</span><span className="font-mono text-muted-foreground">{formatTime(all.by[c])}</span><span className="font-mono font-semibold w-12 text-right">{pct(c).toFixed(1)}%</span></div>)}</div>
             </div>
           </div>

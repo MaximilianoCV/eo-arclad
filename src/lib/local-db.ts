@@ -13,7 +13,7 @@ const now = () => new Date().toISOString();
 export function seedIfEmpty() {
   if (get(K.seeded, false)) return;
   const studies: StudyRow[] = PLAN_EO.map(p => ({
-    id: uid(), plan_id: p.plan_id, frente: p.frente, sede: null, position: p.puesto, collaborator_name: "",
+    id: "demo-" + p.plan_id, plan_id: p.plan_id, frente: p.frente, sede: null, position: p.puesto, collaborator_name: "",
     created_by: p.consultor, study_date: null, semana: p.semana || null, objective: p.objetivo, status: "active", notes: null, created_at: now(),
   }));
   const activities: ActivityRow[] = [];

@@ -12,7 +12,10 @@ const LOCAL_PASSWORD = "ARclad2026"; // solo modo local/demo; en Supabase la con
 export interface Session { name: string; email: string; }
 
 export async function getSession(): Promise<Session | null> {
-  if (!hasSupabase()) { try { return JSON.parse(localStorage.getItem(LOCAL_KEY) || "null"); } catch { return null; } }
+  if (!hasSupabase()) {
+    if (new URLSearchParams(location.search).has("demo")) return USERS[0]; // solo modo local: capturas y demos
+    try { return JSON.parse(localStorage.getItem(LOCAL_KEY) || "null"); } catch { return null; }
+  }
   const { data } = await getSupabase()!.auth.getSession();
   const u = data.session?.user; if (!u) return null;
   return { name: (u.user_metadata?.name as string) || USERS.find(x => x.email === u.email)?.name || u.email || "", email: u.email || "" };

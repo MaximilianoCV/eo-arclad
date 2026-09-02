@@ -11,9 +11,18 @@ interface Props {
   data: PieDataItem[];
   tooltipFormatter?: (value: number) => string;
   height?: number;
+  /** "inside": solo el % dentro de la rebanada (para columnas angostas con leyenda abajo) */
+  labels?: "full" | "inside";
 }
 
 const RADIAN = Math.PI / 180;
+
+function renderLabelInside({ cx, cy, midAngle, innerRadius, outerRadius, percent }: { cx: number; cy: number; midAngle: number; innerRadius: number; outerRadius: number; percent: number }) {
+  if (percent < 0.06) return null;
+  const r = innerRadius + (outerRadius - innerRadius) * 0.55;
+  const x = cx + r * Math.cos(-midAngle * RADIAN), y = cy + r * Math.sin(-midAngle * RADIAN);
+  return <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" fontSize={14} fontWeight={700} style={{ textShadow: "0 1px 3px rgba(0,0,0,0.45)" }}>{`${Math.round(percent * 100)}%`}</text>;
+}
 
 function renderLabel({
   cx,
@@ -84,7 +93,7 @@ function renderLabel({
   );
 }
 
-export default function ProfessionalPie({ data, tooltipFormatter, height = 380 }: Props) {
+export default function ProfessionalPie({ data, tooltipFormatter, height = 380, labels = "full" }: Props) {
   if (data.length === 0) {
     return (
       <div className="flex items-center justify-center text-sm text-muted-foreground" style={{ height }}>
@@ -102,11 +111,12 @@ export default function ProfessionalPie({ data, tooltipFormatter, height = 380 }
           nameKey="name"
           cx="50%"
           cy="50%"
-          outerRadius={Math.min(height * 0.35, 130)}
+          outerRadius={labels === "inside" ? Math.min(height * 0.42, 130) : Math.min(height * 0.35, 130)}
           strokeWidth={2}
           stroke="hsl(var(--background))"
-          label={renderLabel}
+          label={labels === "inside" ? renderLabelInside : renderLabel}
           labelLine={false}
+          isAnimationActive={false}
         >
           {data.map((entry, idx) => (
             <Cell key={idx} fill={entry.color} />
