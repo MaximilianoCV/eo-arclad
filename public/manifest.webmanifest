@@ -1,7 +1,8 @@
 {
-  "name": "Estudios de Observación · ARclad",
-  "short_name": "EO ARclad",
-  "description": "Registro, llenado y resumen de estudios de observación. London Consulting Group.",
+  "name": "Gemba Walk · ARclad",
+  "short_name": "Gemba Walk",
+  "description": "Registro, llenado y resumen de gemba walks. London Consulting Group.",
+  "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

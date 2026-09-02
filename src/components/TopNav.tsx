@@ -20,7 +20,7 @@ export default function TopNav({ session, onSignOut }: { session: Session; onSig
     <header className="h-14 border-b bg-card sticky top-0 z-20 flex items-center px-4 sm:px-6 justify-between gap-3">
       <Link to="/" className="flex items-center gap-3 min-w-0">
         <img src="logo-lcg.png" alt="London Consulting Group" className="h-6 w-auto" />
-        <span className="hidden sm:block border-l pl-3 font-semibold text-sm tracking-tight text-primary truncate">Estudios de Observación</span>
+        <span className="hidden sm:block border-l pl-3 font-semibold text-sm tracking-tight text-primary truncate">Gemba Walk</span>
       </Link>
       <nav className="flex items-center gap-1">
         {LINKS.map(l => (

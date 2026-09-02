@@ -15,8 +15,8 @@ export default function Index() {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ type: "spring", duration: 0.4, bounce: 0 }} className="w-full max-w-3xl text-center space-y-8">
         <div>
           <span className="label-caps text-[10px]">{PROYECTO} · Etapa de Diagnóstico</span>
-          <h1 className="display-text text-3xl mt-2">Estudios de Observación</h1>
-          <p className="text-sm text-muted-foreground mt-2">Registro, llenado en piso y resumen del contenido de trabajo</p>
+          <h1 className="display-text text-3xl mt-2">Gemba Walk</h1>
+          <p className="text-sm text-muted-foreground mt-2">Registro, llenado en piso y resumen del contenido de trabajo del puesto</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {MODULES.map(m => (

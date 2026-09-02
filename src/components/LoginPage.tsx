@@ -25,7 +25,7 @@ export default function LoginPage({ onLogin }: { onLogin: () => void }) {
           <img src="logo-lcg.png" alt="London Consulting Group" className="h-7 w-auto mx-auto" />
           <div>
             <span className="label-caps text-[10px]">{PROYECTO} · Diagnóstico</span>
-            <h1 className="display-text text-2xl mt-1">Estudios de Observación</h1>
+            <h1 className="display-text text-2xl mt-1">Gemba Walk</h1>
           </div>
         </div>
         <div className="space-y-4">
